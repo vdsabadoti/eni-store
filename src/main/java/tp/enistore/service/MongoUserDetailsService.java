@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import tp.enistore.dao.jpa.UserDAO;
 
+//BasicAuth
 @Service
 public class MongoUserDetailsService implements UserDetailsService {
 

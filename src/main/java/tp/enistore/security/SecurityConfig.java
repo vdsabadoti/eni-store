@@ -14,6 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.HttpRequestHandler;
 import tp.enistore.service.MongoUserDetailsService;
 
 
@@ -22,8 +24,14 @@ import tp.enistore.service.MongoUserDetailsService;
 public class SecurityConfig {
     protected final Log logger = LogFactory.getLog(getClass());
 
-    @Autowired
     private MongoUserDetailsService mongoUserDetailsService;
+    private JwtFilter jwtFilter;
+
+    SecurityConfig(MongoUserDetailsService mongoUserDetailsService, JwtFilter jwtFilter) {
+        this.mongoUserDetailsService = mongoUserDetailsService;
+        this.jwtFilter = jwtFilter;
+    }
+
 
     //Injection d'une méthode dans le middleware pour definir la façon de se connecter (logique de connexion)
     @Autowired
@@ -52,14 +60,17 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
                 (authorizeRequests) -> {
                     authorizeRequests.
-                            requestMatchers(HttpMethod.DELETE, "/api/v1/delete/**").hasRole("ADMIN")
+                            requestMatchers(HttpMethod.DELETE, "/api/v1/delete").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.POST, "/api/v1/login").permitAll()
                             .anyRequest().authenticated();
                 }
         );
 
-        //Configurer l'authentifaction de SpringSecurity
+        //Configurer les authentifactions de SpringSecurity
         http.httpBasic(Customizer.withDefaults());
 
+        //Ajouter l'authentification personalisé qu'on a crée
+        http.addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

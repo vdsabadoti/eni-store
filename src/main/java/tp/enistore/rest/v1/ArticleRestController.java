@@ -6,12 +6,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import tp.enistore.bo.Article;
 import tp.enistore.service.ArticleService;
+import tp.enistore.service.ServiceResponse;
 
 import java.util.List;
 
 @RestController
 @CrossOrigin
-@Tag(name = "Eni-Srtore API")
+@Tag(name = "Eni-Srtore API v1")
 public class ArticleRestController {
 
     private ArticleService articleService;
@@ -22,11 +23,11 @@ public class ArticleRestController {
 
     @Operation(summary = "Create a new article")
     @PostMapping("/api/v1/save")
-    public String create(
+    public String createDepreceated(
             @RequestBody  Article article
     ) {
         try {
-            articleService.addArticle(article);
+            articleService.addArticleDepreceated(article);
         } catch (Exception e) {
             return e.getMessage();
         }
@@ -35,30 +36,31 @@ public class ArticleRestController {
 
     @Operation(summary = "Update an article")
     @PostMapping("/api/v1/update")
-    public String update(
+    public String updateDepreceated(
             @RequestBody  Article article
     ) {
         try {
-            articleService.addArticle(article);
+            articleService.addArticleDepreceated(article);
         } catch (Exception e) {
             return e.getMessage();
         }
         return "OK";
     }
 
+
     @Operation(summary = "Get an article")
     @GetMapping("/api/v1/article/{id}")
-    public Article getArticle(
+    public Article getArticleDepreceated(
             @Parameter(description = "The UID of the article", required = true)
             @PathVariable String id
     ) {
-        return articleService.getArticleById(id);
+        return articleService.getArticleByIdDepreceated(id);
     }
 
     @Operation(summary = "Get all articles")
     @GetMapping("/api/v1/articles")
     public List<Article> getAllArticles() {
-        return articleService.getAllArticles();
+        return articleService.getAllArticlesDepreceated();
     }
 
     @Operation(summary = "Delete an article")
@@ -67,7 +69,7 @@ public class ArticleRestController {
             @Parameter(description = "The UID of the article", required = true)
             @PathVariable String id) {
         try {
-            articleService.deleteArticle(id);
+            articleService.deleteArticleDepreceated(id);
             return "OK";
         }catch (Exception e) {
             return e.getMessage();

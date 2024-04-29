@@ -60,7 +60,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
                 (authorizeRequests) -> {
                     authorizeRequests.
-                            requestMatchers(HttpMethod.DELETE, "/api/v1/delete").hasRole("ADMIN")
+                            requestMatchers(HttpMethod.DELETE, "/api/v1/delete/**").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.POST, "/api/v1/login").permitAll()
                             .anyRequest().authenticated();
                 }

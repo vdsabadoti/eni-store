@@ -1,17 +1,18 @@
 package tp.enistore.dao.jpa;
 
 import tp.enistore.bo.Article;
+import tp.enistore.service.ServiceResponse;
 
 import java.util.List;
 
 public interface ArticleDAO {
 
-    public List<Article> findAll();
+    public ServiceResponse<List<Article>> findAll();
 
-    public Article findByUid(String id);
+    public ServiceResponse<Article> findByUid(String id);
 
-    public void save(Article article) throws Exception;
+    public ServiceResponse<Article> save(Article article);
 
-    public void deleteByUid(String id);
+    public ServiceResponse<Article> deleteByUid(String id);
 
 }

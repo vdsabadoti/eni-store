@@ -6,7 +6,7 @@ public class FormRequest<T> {
     private String idAssociation;
 
     public FormRequest(T data, String idAssociation) {
-        this.data = data;
+        this.data = data; // ARTICLE
         this.idAssociation = idAssociation;
     }
 

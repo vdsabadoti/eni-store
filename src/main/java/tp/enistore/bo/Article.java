@@ -2,6 +2,7 @@ package tp.enistore.bo;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "articles")
@@ -13,6 +14,9 @@ public class Article {
     private String uid;
 
     private String title;
+
+    @DBRef
+    private Category category;
 
     public Article() {
 
@@ -40,5 +44,13 @@ public class Article {
 
     public String getUid() {
         return uid;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

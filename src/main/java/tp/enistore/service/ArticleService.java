@@ -2,6 +2,8 @@ package tp.enistore.service;
 
 import org.springframework.stereotype.Service;
 import tp.enistore.bo.Article;
+import tp.enistore.bo.Category;
+import tp.enistore.bo.FormRequest;
 import tp.enistore.dao.jpa.ArticleDAO;
 
 import java.util.ArrayList;
@@ -11,9 +13,11 @@ import java.util.List;
 public class ArticleService {
 
     private ArticleDAO articleDAO;
+    private CategoryService categoryService;
 
-    ArticleService(ArticleDAO articleDAO) {
+    ArticleService(ArticleDAO articleDAO, CategoryService categoryService) {
         this.articleDAO = articleDAO;
+        this.categoryService = categoryService;
     }
 
     @Deprecated
@@ -28,7 +32,10 @@ public class ArticleService {
 
     @Deprecated
     public void addArticleDepreceated(Article article) {
-        addArticle(article);
+        FormRequest<Article> request = new FormRequest<Article>();
+        request.setData(article);
+        request.setIdAssociation("eukrgbr");
+        addArticle(request);
     }
 
     @Deprecated
@@ -44,19 +51,11 @@ public class ArticleService {
         return articleDAO.findByUid(uid);
     }
 
-    public ServiceResponse<Article> addArticle(Article article) {
-        List<Article> articles = getAllArticles().data;
+    public ServiceResponse<Article> addArticle(FormRequest<Article> resquest) {
+        Category category = this.categoryService.findByUid(resquest.getIdAssociation());
+        Article article = resquest.getData();
 
-        //verifie qu'on ne repete pas le titre
-        for (Article a : articles) {
-            if (a.getTitle().equals(article.getTitle())) {
-                ServiceResponse<Article> response = new ServiceResponse<Article>();
-                response.code = 710;
-                response.message = "Impossible de modifier un article avec un titre déjà existant";
-                response.data = null;
-            }
-        }
-
+        article.setCategory(category);
         return articleDAO.save(article);
     }
 

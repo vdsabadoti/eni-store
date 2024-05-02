@@ -25,6 +25,7 @@ public class AuthJwtService {
         if (loadUser == null){
             return "User not found";
         }
+        //TODO verify credentials
         return jwtService.generateToken(loadUser);
     }
 }

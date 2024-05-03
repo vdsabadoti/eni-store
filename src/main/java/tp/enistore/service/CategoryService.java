@@ -1,7 +1,9 @@
 package tp.enistore.service;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import tp.enistore.bo.Category;
+import tp.enistore.bo.Helpers;
 import tp.enistore.dao.jpa.CategoryDAO;
 
 import java.util.UUID;
@@ -24,7 +26,7 @@ public class CategoryService {
         if (category == null) {
             response.code = 710;
             response.message = "El campo no puede ser nulo";
-            return response;
+            return Helpers.logResponse(response);
         }
         UUID uuid = UUID.randomUUID();
         category.setUid(uuid.toString());
@@ -32,7 +34,7 @@ public class CategoryService {
         response.message = "El campo se ha registrado correctamente";
         response.code = 200;
         response.data = category;
-        return response;
+        return Helpers.logResponse(response);
     }
 
     public ServiceResponse<Category> updateCategory(Category category) {
@@ -40,13 +42,13 @@ public class CategoryService {
         if (category == null) {
             response.code = 710;
             response.message = "El campo no puede ser nulo";
-            return response;
+            return Helpers.logResponse(response);
         }
         this.categoryDAO.save(category);
         response.message = "El campo se ha actualizado correctamente";
         response.code = 200;
         response.data = category;
-        return response;
+        return Helpers.logResponse(response);
     }
 
     public ServiceResponse<Category> deleteCategory(String uid) {
@@ -55,13 +57,13 @@ public class CategoryService {
         if (category == null) {
             response.code = 710;
             response.message = "El campo no existe";
-            return response;
+            return Helpers.logResponse(response);
         }
         this.categoryDAO.delete(uid);
         response.message = "El campo se ha eliminado correctamente";
         response.code = 200;
         response.data = category;
-        return response;
+        return Helpers.logResponse(response);
     }
 
 }

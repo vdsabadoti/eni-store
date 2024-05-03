@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service;
 import tp.enistore.bo.Article;
 import tp.enistore.bo.Category;
 import tp.enistore.bo.FormRequest;
+import tp.enistore.bo.Helpers;
 import tp.enistore.dao.jpa.ArticleDAO;
+import tp.enistore.dao.jpa.CategoryDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +15,11 @@ import java.util.List;
 public class ArticleService {
 
     private ArticleDAO articleDAO;
-    private CategoryService categoryService;
+    private CategoryDAO categoryDAO;
 
-    ArticleService(ArticleDAO articleDAO, CategoryService categoryService) {
+    ArticleService(ArticleDAO articleDAO, CategoryDAO categoryDAO) {
         this.articleDAO = articleDAO;
-        this.categoryService = categoryService;
+        this.categoryDAO = categoryDAO;
     }
 
     @Deprecated
@@ -52,14 +54,14 @@ public class ArticleService {
     }
 
     public ServiceResponse<Article> addArticle(FormRequest<Article> resquest) {
-        Category category = this.categoryService.findByUid(resquest.getIdAssociation());
+        Category category = this.categoryDAO.findByUid(resquest.getIdAssociation());
         Article article = resquest.getData();
 
         article.setCategory(category);
         return articleDAO.save(article);
     }
 
-    public ServiceResponse<Article> deleteArticle(String uid) {
+    public ServiceResponse<Boolean> deleteArticle(String uid) {
         return articleDAO.deleteByUid(uid);
     }
 
@@ -71,7 +73,7 @@ public class ArticleService {
             response.code = 710;
             response.message = "Controle de surface non valide";
         }
-        return response;
+        return Helpers.logResponse(response);
     }
 
 }

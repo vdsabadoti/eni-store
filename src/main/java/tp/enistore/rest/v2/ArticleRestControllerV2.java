@@ -59,7 +59,7 @@ public class ArticleRestControllerV2 {
 
     @Operation(summary = "Delete an article")
     @DeleteMapping("/api/v2/admin/delete/{id}")
-    public ServiceResponse<Article> delete(
+    public ServiceResponse<Boolean> delete(
             @Parameter(description = "The UID of the article", required = true)
             @PathVariable String id) {
         return articleService.deleteArticle(id);

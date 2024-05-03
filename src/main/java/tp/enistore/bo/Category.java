@@ -17,6 +17,11 @@ public class Category {
         this.label = label;
     }
 
+    public Category(String uid, String label) {
+        this.uid = uid;
+        this.label = label;
+    }
+
     public Category(){}
 
     public String getUid() {

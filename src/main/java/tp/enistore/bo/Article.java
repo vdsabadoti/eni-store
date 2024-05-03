@@ -22,6 +22,21 @@ public class Article {
 
     }
 
+    public Article(String uid, String title, Category category) {
+        this.uid = uid;
+        this.title = title;
+        this.category = category;
+    }
+
+    public Article(String uid, String title) {
+        this.uid = uid;
+        this.title = title;
+    }
+
+    public Article(String title) {
+        this.title = title;
+    }
+
     public void setId(String id) {
         this.id = id;
     }

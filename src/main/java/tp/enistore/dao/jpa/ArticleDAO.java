@@ -11,8 +11,10 @@ public interface ArticleDAO {
 
     public ServiceResponse<Article> findByUid(String id);
 
+    ServiceResponse<Article> findByTitle(String title);
+
     public ServiceResponse<Article> save(Article article);
 
-    public ServiceResponse<Article> deleteByUid(String id);
+    public ServiceResponse<Boolean> deleteByUid(String id);
 
 }

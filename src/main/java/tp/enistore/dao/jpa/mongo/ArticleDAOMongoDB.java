@@ -3,6 +3,7 @@ package tp.enistore.dao.jpa.mongo;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import tp.enistore.bo.Article;
+import tp.enistore.bo.Helpers;
 import tp.enistore.dao.jpa.ArticleDAO;
 import tp.enistore.service.ServiceResponse;
 
@@ -27,11 +28,11 @@ public class ArticleDAOMongoDB implements ArticleDAO {
         if (response.data.isEmpty()) {
             response.code = 722;
             response.message = "No articles found";
-            return response;
+            return Helpers.logResponse(response);
         }
         response.code = 200;
         response.message = "Articles récupérés avec succès";
-        return response;
+        return Helpers.logResponse(response);
     }
 
     @Override
@@ -45,7 +46,12 @@ public class ArticleDAOMongoDB implements ArticleDAO {
         }
         response.code = 200;
         response.message = "Article récupéré avec succès";
-        return response;
+        return Helpers.logResponse(response);
+    }
+
+    @Override
+    public ServiceResponse<Article> findByTitle(String title) {
+        return null;
     }
 
     @Override
@@ -57,7 +63,7 @@ public class ArticleDAOMongoDB implements ArticleDAO {
                 response.code = 710;
                 response.message = "No such article with id " + article.getUid();
                 response.data = null;
-                return response;
+                return Helpers.logResponse(response);
             }
             article.setId(articleToUp.getId());
             response.message = "Article modifié avec succès";
@@ -69,23 +75,23 @@ public class ArticleDAOMongoDB implements ArticleDAO {
         response.code = 200;
         response.data = article;
         articleMongoRepository.save(article);
-        return response;
+        return Helpers.logResponse(response);
     }
 
     @Override
-    public ServiceResponse<Article> deleteByUid(String id) {
-        ServiceResponse<Article> response = new ServiceResponse<>();
+    public ServiceResponse<Boolean> deleteByUid(String id) {
+        ServiceResponse<Boolean> response = new ServiceResponse<>();
         Article articleToDelete = articleMongoRepository.findByUid(id);
         if (articleToDelete != null){
             articleMongoRepository.deleteByUid(id);
             response.code = 200;
-            response.data = articleToDelete;
+            response.data = true;
             response.message = "L'article " + id + " a été supprimé avec succès";
-            return response;
+            return Helpers.logResponse(response);
         }
         response.code = 702;
         response.message = "Impossible de supprimer un article dont l'UID n'existe pas";
-        response.data = null;
-        return response;
+        response.data = false;
+        return Helpers.logResponse(response);
     }
 }

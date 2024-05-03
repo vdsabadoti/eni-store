@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import tp.enistore.bo.Article;
 import tp.enistore.bo.FormRequest;
+import tp.enistore.bo.Helpers;
 import tp.enistore.service.ArticleService;
 import tp.enistore.service.ServiceResponse;
 
@@ -28,7 +29,7 @@ public class ArticleServicesTests {
     @Test
     public void test01(){
         ServiceResponse<Article> response = articleService.getArticleByUid("1");
-        assertEquals(response.code, 200);
+        assertEquals(response.code, Helpers.CD_SUCCES);
         assertNotNull(response.data);
     }
 
@@ -42,7 +43,7 @@ public class ArticleServicesTests {
     public void test02(){
         ServiceResponse<Article> response = articleService.getArticleByUid("6");
         assertEquals(response.code, 702);
-        assertEquals(response.data, null);
+        assertEquals(response.data, Helpers.CD_NOT_FOUND);
     }
 
     /*
@@ -54,7 +55,7 @@ public class ArticleServicesTests {
     @Test
     public void test03(){
         ServiceResponse<Boolean> delete = articleService.deleteArticle("6");
-        assertEquals(delete.code, 701);
+        assertEquals(delete.code, Helpers.CD_ERROR);
         assertEquals(delete.data, Boolean.FALSE);
     }
 
@@ -72,10 +73,10 @@ public class ArticleServicesTests {
     @Test
     public void test04(){
         ServiceResponse<Boolean> delete = articleService.deleteArticle("2");
-        assertEquals(delete.code, 200);
+        assertEquals(delete.code, Helpers.CD_SUCCES);
         assertEquals(delete.data, Boolean.TRUE);
         ServiceResponse<Article> response = articleService.getArticleByUid("2");
-        assertEquals(response.code, 702);
+        assertEquals(response.code, Helpers.CD_ERROR);
         assertEquals(response.data, null);
     }
 
@@ -97,10 +98,10 @@ public class ArticleServicesTests {
                         new Article("Pain au chocolat"),
                 "1")
         );
-        assertEquals(newArticle.code, 200);
+        assertEquals(newArticle.code, Helpers.CD_SUCCES);
         assertNotNull(newArticle.data);
         ServiceResponse<Article> response = articleService.getArticleByUid(newArticle.data.getUid());
-        assertEquals(response.code, 200);
+        assertEquals(response.code, Helpers.CD_SUCCES);
         assertNotNull(response.data);
     }
 
@@ -121,7 +122,7 @@ public class ArticleServicesTests {
                         new Article("1","Pain au chocolat"),
                         "1")
         );
-        assertEquals(updtArticle.code, 200);
+        assertEquals(updtArticle.code, Helpers.CD_SUCCES);
         assertNotNull(updtArticle.data);
 
         ServiceResponse<Article> responseArticle3 = articleService.getArticleByUid("3");
@@ -131,7 +132,7 @@ public class ArticleServicesTests {
                         "1")
         );
 
-        assertEquals(changeTitleArticle.code, 701);
+        assertEquals(changeTitleArticle.code, Helpers.CD_ERROR);
     }
 
 }
